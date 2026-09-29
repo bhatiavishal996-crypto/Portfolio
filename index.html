@@ -121,7 +121,7 @@
     font-weight:400;
   }
 
-  .scene{ perspective:1400px; width:250px; height:250px; margin:0 auto; touch-action:none; cursor:grab; filter: drop-shadow(0 24px 40px rgba(0,0,0,.14)); }
+  .scene{ perspective:1400px; width:250px; height:250px; margin:0 auto; touch-action:none; overscroll-behavior:contain; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; cursor:grab; filter: drop-shadow(0 24px 40px rgba(0,0,0,.14)); }
   .scene:active{ cursor:grabbing; }
   #cubeGroup{
     width:250px; height:250px; position:relative;
@@ -149,6 +149,13 @@
   .f-ny{ transform: rotateX(-90deg) translateZ(28px); }
 
   .solve-copy{ margin-top:22px; font-size:13px; color:var(--ink-dim); font-weight:500; }
+  .wellbeing-note{
+    max-width:430px; margin:18px auto 0; padding:12px 14px;
+    border:1px solid rgba(255,122,26,.3); border-radius:12px;
+    background:rgba(255,255,255,.72); color:var(--ink-dim);
+    font-size:12.5px; line-height:1.5;
+  }
+  .wellbeing-note strong{ color:var(--ink); }
   .move-row{ display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
   .move-row button{
     font-family:var(--font-display); font-weight:700; font-size:14px;
@@ -301,10 +308,29 @@
 
   footer{ text-align:center; padding:50px 24px 70px; font-size:13px; color:var(--ink-dim); }
 
-  @media (max-width:480px){
-    .scene, #cubeGroup{ width:220px; height:220px; }
+  @media (max-width:600px){
+    .topbar{ padding:14px 16px; font-size:12px; }
+    #view-landing{ min-height:100dvh; padding:66px 18px 28px; justify-content:flex-start; }
+    .hero-eyebrow{ margin-bottom:10px; font-size:11px; }
+    .surname{ margin-top:5px; }
+    .hero p.sub{ margin:12px auto 15px; font-size:13px; line-height:1.45; }
+    .scene{ width:220px; height:220px; margin-top:0; filter:drop-shadow(0 16px 25px rgba(0,0,0,.13)); }
+    #cubeGroup{ width:220px; height:220px; }
     .cubie{ top:82px; left:82px; }
     .name-face span{ width:40px; height:40px; font-size:18px; }
+    .solve-copy{ margin-top:10px; }
+    .move-row{ gap:7px; margin-top:9px; }
+    .move-row button{ flex:1 1 42%; padding:10px 8px; font-size:13px; }
+    .reset-row{ margin-top:8px; }
+    .wellbeing-note{ margin-top:13px; font-size:11.5px; padding:10px 12px; }
+    .legend{ margin-top:12px; gap:6px; }
+    .legend-item{ font-size:10.5px; }
+    .skip-btn{ margin-top:16px; padding:10px 14px; }
+    .page-two-label{ padding:68px 18px 0; font-size:12px; }
+    section.block{ padding:52px 18px; }
+    h2{ font-size:30px; line-height:1.1; }
+    .entry{ padding:17px 0; }
+    .entry-head{ gap:5px; }
   }
 </style>
 </head>
@@ -324,7 +350,7 @@
     <div class="surname">Bhatia</div>
     <p class="sub">The cube is two moves out of place. Turn the top and the right side to line the colors back up and unlock the portfolio, or skip through, no hard feelings.</p>
 
-    <div class="scene" id="scene" aria-label="Rubik's cube, scrambled two moves out. Drag to view, use the buttons to turn the top or right layer.">
+    <div class="scene" id="scene" aria-label="Rubik's cube, scrambled two moves out. Drag to view the cube. Use the buttons to turn the top or right layer.">
       <div id="cubeGroup"></div>
     </div>
 
@@ -336,6 +362,10 @@
       <button class="mv-right" id="mv-Ri">Right ↺</button>
     </div>
     <div class="reset-row"><button class="reset-btn" id="resetBtn">Reset cube to start</button></div>
+
+    <aside class="wellbeing-note" aria-label="A short refresh note">
+      <strong>A small reset for busy HR minds.</strong> Step out of the routine for a minute, solve a tiny puzzle, and return a little fresher—one playful mental exercise to help break up rigorous work and ease exhaustion.
+    </aside>
 
     <div class="legend">
       <div class="legend-item"><span class="sw" style="background:var(--c-blue)"></span>Experience</div>
@@ -595,10 +625,16 @@
     R:  {axis:'X', layer: 1, deg: 90},  Ri: {axis:'X', layer: 1, deg:-90},
   };
   const inv = {U:'Ui',Ui:'U', R:'Ri',Ri:'R'};
+  let turning = false;
 
   function doMove(name, animate, thenLog){
+    if(turning || locked) return;
+    turning = animate;
     const m = moves[name];
-    rotate(m.axis, m.layer, m.deg, animate, ()=>{ if(thenLog) afterMove(name); });
+    rotate(m.axis, m.layer, m.deg, animate, ()=>{
+      turning = false;
+      if(thenLog) afterMove(name);
+    });
   }
 
   // scramble instantly on load: two real moves out of solved
@@ -609,6 +645,8 @@
 
   let moveLog = ['R','U'];
   let locked = false;
+  let portfolioUnlocked = false;
+  let solveTimeout;
 
   function afterMove(name){
     if(moveLog.length && moveLog[moveLog.length-1] === inv[name]){ moveLog.pop(); }
@@ -627,12 +665,16 @@
     });
     moveLog = ['R','U'];
     locked = false;
+    turning = false;
+    clearTimeout(solveTimeout);
     document.getElementById('solveModal').classList.remove('show');
   });
 
   function onSolved(){
     locked = true;
     document.getElementById('solveModal').classList.add('show');
+    // A solved cube should feel like a reward, not require another action.
+    solveTimeout = setTimeout(unlockPortfolio, 750);
   }
 
   document.getElementById('enterBtn').addEventListener('click', ()=>{
@@ -641,6 +683,8 @@
   });
 
   function unlockPortfolio(){
+    if(portfolioUnlocked) return;
+    portfolioUnlocked = true;
     const landing = document.getElementById('view-landing');
     const portfolio = document.getElementById('view-portfolio');
     landing.classList.add('unlocked-out');
@@ -668,9 +712,18 @@
   scene.addEventListener('mousedown', e=>down(e.clientX,e.clientY));
   window.addEventListener('mousemove', e=>move(e.clientX,e.clientY));
   window.addEventListener('mouseup', up);
-  scene.addEventListener('touchstart', e=>{ const t=e.touches[0]; down(t.clientX,t.clientY); }, {passive:true});
-  window.addEventListener('touchmove', e=>{ const t=e.touches[0]; move(t.clientX,t.clientY); }, {passive:true});
-  window.addEventListener('touchend', up);
+  scene.addEventListener('touchstart', e=>{
+    if(e.touches.length !== 1) return;
+    e.preventDefault();
+    const t=e.touches[0]; down(t.clientX,t.clientY);
+  }, {passive:false});
+  window.addEventListener('touchmove', e=>{
+    if(!dragging || e.touches.length !== 1) return;
+    e.preventDefault();
+    const t=e.touches[0]; move(t.clientX,t.clientY);
+  }, {passive:false});
+  window.addEventListener('touchend', up, {passive:true});
+  window.addEventListener('touchcancel', up, {passive:true});
   applyOrbit();
 
   // scroll effect: each section tilts like a cube face rotating on a vertical axis,
