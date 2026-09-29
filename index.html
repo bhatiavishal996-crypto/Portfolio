@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vishal Bhatia — Portfolio</title>
-<meta name="description" content="Vishal Bhatia: Credit Manager turned AI builder. Solve the cube to unlock experience, projects, and skills.">
+<meta name="description" content="Vishal Bhatia: Credit Analysis Manager turned AI builder. Solve the cube to unlock experience, projects, and skills.">
 <meta property="og:title" content="Vishal Bhatia — Portfolio">
-<meta property="og:description" content="Solve the cube to unlock my experience, projects, and skills. Credit Manager at ICICI Bank, building toward AI Product Management.">
+<meta property="og:description" content="Solve the cube to unlock my experience, projects, and skills. Credit Analysis Manager at ICICI Bank, building toward AI Product Management.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vishal Bhatia — Portfolio">
@@ -222,7 +222,7 @@
   .skip-btn:hover{ border-color:var(--accent); color:var(--accent-2); transform:translateY(2px); }
   .skip-btn svg{ width:12px; height:12px; }
 
-  /* ---------- VIEW TWO: the portfolio, each section rotates up like a cube face ---------- */
+  /* ---------- VIEW TWO: portfolio sections use bold cube-face colors ---------- */
   #view-portfolio{
     display:none; opacity:0;
     transition:opacity .55s ease;
@@ -235,29 +235,30 @@
     text-align:center; padding:90px 24px 0;
   }
 
-  .flip-stage{ perspective:1500px; }
   section.block{
     padding:76px 24px; border-top:4px solid var(--line); position:relative;
-    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,.014) 0 2px, transparent 2px 15px);
     scroll-snap-align:start;
-    perspective:1500px;
   }
   section.block .inner{
     max-width:720px; margin:0 auto; position:relative;
-    transform-origin:center center;
-    will-change:transform, opacity;
-    backface-visibility:hidden;
-  }
-  @media (prefers-reduced-motion: reduce){
-    section.block .inner{ transform:none !important; opacity:1 !important; }
   }
 
-  #about{      background-color: #F7F6F2; border-top-color:#D8D6CE; }
-  #experience{ background-color: color-mix(in srgb, var(--c-blue) 7%, #fff);   border-top-color:var(--c-blue); }
-  #projects{   background-color: color-mix(in srgb, var(--c-red) 6%, #fff);    border-top-color:var(--c-red); }
-  #skills{     background-color: color-mix(in srgb, var(--c-orange) 7%, #fff); border-top-color:var(--c-orange); }
-  #education{  background-color: color-mix(in srgb, var(--c-green) 6%, #fff);  border-top-color:var(--c-green); }
-  #contact{    background-color: color-mix(in srgb, var(--c-yellow) 10%, #fff); border-top-color:var(--c-yellow); }
+  #about{      background:#FAFAF8; border-top-color:#D8D6CE; }
+  #experience{ background:var(--c-blue); border-top-color:var(--c-blue); }
+  #projects{   background:var(--c-red); border-top-color:var(--c-red); }
+  #skills{     background:var(--c-orange); border-top-color:var(--c-orange); }
+  #education{  background:var(--c-green); border-top-color:var(--c-green); }
+  #contact{    background:var(--c-yellow); border-top-color:var(--c-yellow); }
+
+  #experience, #projects, #skills, #education{ color:#fff; }
+  #experience .eyebrow, #projects .eyebrow, #skills .eyebrow, #education .eyebrow,
+  #experience .entry-meta, #projects .entry-meta, #skills .entry-meta, #education .entry-meta,
+  #experience .chip-label, #projects .chip-label, #skills .chip-label, #education .chip-label,
+  #experience .placeholder-note, #projects .placeholder-note, #skills .placeholder-note, #education .placeholder-note{ color:rgba(255,255,255,.84); }
+  #experience .entry p, #projects .entry p, #skills .entry p, #education .entry p,
+  #experience .entry ul, #projects .entry ul, #skills .entry ul, #education .entry ul{ color:#fff; }
+  #experience .chip, #projects .chip, #skills .chip, #education .chip{ color:#fff; background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.55); }
+  #experience .placeholder-note, #projects .placeholder-note, #skills .placeholder-note, #education .placeholder-note{ border-top-color:rgba(255,255,255,.45); }
 
   .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:20px; }
   .eyebrow .dot{ width:10px; height:10px; border-radius:3px; display:inline-block; }
@@ -333,13 +334,12 @@
   <!-- VIEW ONE: locked cube landing -->
   <section id="view-landing">
     <div class="hero-bg"></div>
-    <div class="hero-eyebrow">Bengaluru</div>
+    <div class="hero-eyebrow">A short mental reset</div>
 
     <div class="name-face">
-      <span class="t-red">V</span><span class="t-orange">I</span><span class="t-yellow">S</span>
-      <span class="t-green">H</span><span class="t-blue">A</span><span class="t-white">L</span>
+      <span class="t-red">U</span><span class="t-orange">N</span><span class="t-yellow">L</span>
+      <span class="t-green">O</span><span class="t-blue">C</span><span class="t-white">K</span>
     </div>
-    <div class="surname">Bhatia</div>
     <p class="sub">The cube is two moves out of place. Turn the top and the right side to line the colors back up and unlock the portfolio, or skip through, no hard feelings.</p>
 
     <div class="scene" id="scene" aria-label="Rubik's cube, scrambled two moves out. Drag to view the cube. Use the buttons to turn the top or right layer.">
@@ -418,7 +418,7 @@
             </div>
           </div>
           <div class="about-text">
-            <p>Right now I'm a Credit Manager at ICICI Bank in Bengaluru, supporting credit appraisal for lending decisions by reading applicant cash flows, obligations, and policy fit. Before that I spent two years at Air India in Strategy and Operations, where I helped drive about INR 10 Cr in quantified impact across cost optimization, operational planning, and process transformation.</p>
+            <p>Right now I'm a Credit Analysis Manager at ICICI Bank in Bengaluru, supporting credit appraisal for lending decisions by reading applicant cash flows, obligations, and policy fit. Before that I spent two years at Air India in Strategy and Operations, where I helped drive about INR 10 Cr in quantified impact across cost optimization, operational planning, and process transformation.</p>
             <p style="margin-top:14px;">I hold an MBA in Finance and Strategy from IIM Sirmaur, and outside of the day job I've been building AI enabled workflow tools like VOIC, growing my skills in product discovery and data driven decision support along the way. I'm now looking for roles in AI Product Management, AI transformation, or strategy and risk analysis within fintech and banking.</p>
           </div>
         </div>
@@ -431,7 +431,7 @@
         <h2>Experience</h2>
 
         <div class="entry">
-          <div class="entry-head"><span class="entry-title">Credit Manager</span><span class="entry-meta">ICICI Bank, Bengaluru · Jul 2026, Present</span></div>
+          <div class="entry-head"><span class="entry-title">Credit Analysis Manager</span><span class="entry-meta">ICICI Bank, Bengaluru · Jul 2026, Present</span></div>
           <ul>
             <li>Support credit appraisal for lending decisions by assessing applicant cash flows, existing obligations, repayment capacity, and policy compliance across salaried and business cases</li>
             <li>Identify risk indicators, data gaps, and policy exceptions, turning financial inputs into decision ready insights for credit review stakeholders</li>
@@ -533,9 +533,9 @@
       <div class="inner">
         <div class="eyebrow"><span class="dot" style="background:var(--c-yellow)"></span>Yellow face, Contact</div>
         <h2>Get in touch</h2>
-        <p style="color:var(--ink-dim); max-width:520px; margin-bottom:18px;">Gurugram, Haryana. Always happy to talk about credit, AI, or anything in between.</p>
+        <p style="color:var(--ink-dim); max-width:520px; margin-bottom:18px;">Bangalore. Always happy to talk about AI, product strategy, or anything in between.</p>
         <div class="contact-links">
-          <a href="Vishal_Bhatia_CV.pdf">Download Resume (PDF)</a>
+          <a href="Vishal_Bhatia_CV.pdf" download>Download Resume (PDF)</a>
           <a href="mailto:bhatiavishal996@gmail.com">Email</a>
           <a href="tel:+916280901012">+91 62809 01012</a>
           <a href="https://www.linkedin.com/in/vishal-bhatia42/" target="_blank" rel="noopener">LinkedIn</a>
@@ -734,37 +734,8 @@
   window.addEventListener('touchcancel', up, {passive:true});
   applyOrbit();
 
-  // scroll effect: each section tilts like a cube face rotating on a vertical axis,
-  // flat and facing you at the center of the screen, rotating away above and below it
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function initReveal(){
-    if(reducedMotion) return;
-    const inners = Array.from(document.querySelectorAll('#view-portfolio section.block .inner'));
-    const MAX_ANGLE = 46;
-    let ticking = false;
-
-    function update(){
-      const vh = window.innerHeight;
-      const viewCenter = vh / 2;
-      inners.forEach(inner=>{
-        const rect = inner.parentElement.getBoundingClientRect();
-        const sectionCenter = rect.top + rect.height / 2;
-        let progress = (sectionCenter - viewCenter) / vh;
-        progress = Math.max(-1, Math.min(1, progress));
-        const angle = progress * MAX_ANGLE;
-        const fade = 1 - Math.min(1, Math.abs(progress)) * 0.65;
-        const depth = -Math.abs(progress) * 60;
-        inner.style.transform = 'rotateX(' + angle + 'deg) translateZ(' + depth + 'px)';
-        inner.style.opacity = String(fade);
-      });
-      ticking = false;
-    }
-    function onScroll(){
-      if(!ticking){ requestAnimationFrame(update); ticking = true; }
-    }
-    window.addEventListener('scroll', onScroll, {passive:true});
-    window.addEventListener('resize', onScroll);
-    update();
+    // Sections remain flat and solid while scrolling—no visual gaps between cube faces.
   }
 })();
 </script>
